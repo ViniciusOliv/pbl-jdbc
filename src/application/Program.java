@@ -1,5 +1,7 @@
 package application;
 
+import model.dao.ClienteDao;
+import model.dao.DaoFactory;
 import model.entities.Cliente;
 import model.entities.Endereco;
 public class Program {
@@ -10,8 +12,11 @@ public class Program {
 		Endereco end = new Endereco(1, "Rua 1", "Bairro 1", 111111, obj);
 		System.out.println(obj);
 		System.out.println(end);
+		
+		ClienteDao clienteDao = DaoFactory.createClienteDao();
+		
+		System.out.println();
+		
 	}
-	
-	
 	
 }

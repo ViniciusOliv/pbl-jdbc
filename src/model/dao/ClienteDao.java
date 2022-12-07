@@ -1,11 +1,15 @@
 package model.dao;
 
-public class ClienteDao {
+import java.util.List;
+
+import model.entities.Cliente;
+
+public interface ClienteDao {
 
 	void insert(Cliente obj);
 	void update(Cliente obj);
 	void deleteById(int id);
-	void findById(int id);
+	Cliente findById(int id);
 	List<Cliente> findAll();
 	
 }
