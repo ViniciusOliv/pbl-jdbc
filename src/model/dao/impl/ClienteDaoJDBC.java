@@ -117,6 +117,48 @@ public class ClienteDaoJDBC implements ClienteDao {
 		}
 	}
 
+	@Override
+	public List<Cliente> findAll() {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st =  conn.prepareStatement(				
+					"SELECT cliente.*, endereco.rua as EndRua "
+					+ "FROM cliente INNER JOIN endereco "
+					+ "ON cliente.id_cliente = endereco.id_cliente "
+					+ "ORDER BY Nome;");
+			
+			
+		
+			rs = st.executeQuery();
+			
+			List<Cliente> list = new ArrayList<>();
+			Map<Integer, Endereco> map = new HashMap<>();
+			 
+ 			while (rs.next()) {
+ 				Endereco end = map.get(rs.getInt("id_endereco"));
+ 				
+ 				if (end == null) { 				
+ 				end = instantiateEndereco(rs);
+				map.put(rs.getInt("id_endereco"), end);
+ 				}
+				
+				
+				Cliente cli = instantiateCliente(rs, end);
+				list.add(cli);
+			}
+			return list;
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+	
+	
 	private Cliente instantiateCliente(ResultSet rs, Endereco end) throws SQLException {
 		Cliente cli = new Cliente();
 		cli.setId(rs.getInt("id_cliente"));
@@ -135,19 +177,6 @@ public class ClienteDaoJDBC implements ClienteDao {
 		
 		return end;
 	}
-
-
-
-
-	@Override
-	public List<Cliente> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-
 
 
 }
