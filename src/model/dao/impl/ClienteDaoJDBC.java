@@ -28,11 +28,40 @@ public class ClienteDaoJDBC implements ClienteDao {
 	
 	
 	@Override
-	public void insert(Cliente obj) {
-		// TODO Auto-generated method stub
-		
+	public void insert(Cliente cli) {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement(
+					"INSERT INTO cliente "
+					+ "(nome,sobrenome)"
+					+ "VALUES"
+					+ "(?,?)");
+			
+			st.setString(1, cli.getNome());
+			st.setString(2, cli.getSobrenome());
+			st.setInt(3, cli.getEndereco().getId());
+			
+			int rowsAffected = st.executeUpdate(null);
+			
+			if (rowsAffected > 0) {
+				ResultSet rs = st.getGeneratedKeys();
+				if (rs.next()) {
+					int id = rs.getInt(1);
+					cli.setId(id);
+				}
+				DB.closeResultSet(rs);
+			}
+		else { throw new DbException("Unexpected error");
+			}
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			
+		}
 	}
-
 	@Override
 	public void update(Cliente obj) {
 		// TODO Auto-generated method stub

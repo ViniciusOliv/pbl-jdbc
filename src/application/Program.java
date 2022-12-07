@@ -14,18 +14,15 @@ public class Program {
 
 		
 		ClienteDao clienteDao = DaoFactory.createClienteDao();
+
 		
 		System.out.println("---- PROCURANDO POR ID -----");
 		Cliente cliente = clienteDao.findById(2);
 		
-		System.out.println("----tentando todos-- ");
-		List<Cliente> list = clienteDao.findAll();
-		
-		list = clienteDao.findAll();
-		for (Cliente cli : list) {
-			System.out.println(cli);
-		}
-		
+		System.out.println("---- Inserindo -----");
+		Cliente newCliente = new Cliente(null, "Pedro","raul", end);
+		clienteDao.insert(newCliente);
+		System.out.println("Inserido, novo id= " + newCliente.getId() );
 		
 		System.out.println(cliente);
 		
