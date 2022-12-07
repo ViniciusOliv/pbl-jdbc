@@ -3,6 +3,7 @@ package model.dao;
 import java.util.List;
 
 import model.entities.Cliente;
+import model.entities.Endereco;
 
 public interface ClienteDao {
 
@@ -11,5 +12,6 @@ public interface ClienteDao {
 	void deleteById(int id);
 	Cliente findById(int id);
 	List<Cliente> findAll();
+	List<Cliente> findByEndereco(Endereco endereco);
 	
 }

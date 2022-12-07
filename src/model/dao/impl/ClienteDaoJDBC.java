@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbException;
@@ -71,6 +74,48 @@ public class ClienteDaoJDBC implements ClienteDao {
 			DB.closeResultSet(rs);
 		}			
 	}
+	
+	@Override
+	public List<Cliente> findByEndereco(Endereco endereco) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st =  conn.prepareStatement(				
+					"SELECT cliente.*, endereco.rua as EndRua "
+					+ "FROM cliente INNER JOIN endereco "
+					+ "ON cliente.id_cliente = endereco.id_cliente "
+					+ "WHERE id_endereco = ? "
+					+ "ORDER BY Nome;");
+			
+			
+			st.setInt(1, endereco.getId());
+			rs = st.executeQuery();
+			
+			List<Cliente> list = new ArrayList<>();
+			Map<Integer, Endereco> map = new HashMap<>();
+			 
+ 			while (rs.next()) {
+ 				Endereco end = map.get(rs.getInt("id_endereco"));
+ 				
+ 				if (end == null) { 				
+ 				end = instantiateEndereco(rs);
+				map.put(rs.getInt("id_endereco"), end);
+ 				}
+				
+				
+				Cliente cli = instantiateCliente(rs, end);
+				list.add(cli);
+			}
+			return list;
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
 
 	private Cliente instantiateCliente(ResultSet rs, Endereco end) throws SQLException {
 		Cliente cli = new Cliente();
@@ -99,5 +144,10 @@ public class ClienteDaoJDBC implements ClienteDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
+
+
 
 }

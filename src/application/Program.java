@@ -1,5 +1,7 @@
 package application;
 
+
+
 import model.dao.ClienteDao;
 import model.dao.DaoFactory;
 import model.entities.Cliente;
@@ -13,6 +15,9 @@ public class Program {
 		
 		System.out.println("---- PROCURANDO POR ID -----");
 		Cliente cliente = clienteDao.findById(2);
+		
+	
+		
 		
 		System.out.println(cliente);
 		
