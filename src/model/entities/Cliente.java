@@ -11,6 +11,7 @@ public class Cliente implements Serializable {
 	private String nome;
 	private String sobrenome;
 
+	private Endereco endereco;
 	
 
 
@@ -41,16 +42,25 @@ public class Cliente implements Serializable {
 
 
 	
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
 	public Cliente() {
 		
 	}
 	
-	public Cliente(int id, String nome, String sobrenome) {
-	
+
+	public Cliente(int id, String nome, String sobrenome, Endereco endereco) {
+		super();
 		this.id = id;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
-		
+		this.endereco = endereco;
 	}
 
 	@Override
@@ -59,21 +69,10 @@ public class Cliente implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cliente other = (Cliente) obj;
-		return id == other.id;
+	public String toString() {
+		return "Cliente [id=" + id + ", nome=" + nome + ", sobrenome=" + sobrenome + ", endereco=" + endereco + "]";
 	}
 
-	@Override
-	public String toString() {
-		return "Cliente [id=" + id + ", nome=" + nome + ", sobrenome=" + sobrenome + "]";
-	}
 
 
 

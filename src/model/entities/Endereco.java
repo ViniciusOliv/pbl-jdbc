@@ -12,7 +12,7 @@ public class Endereco implements Serializable {
 	private String bairro;
 	private int cep; 
 	
-	private Cliente cliente;
+	
 	
 	public int getId() {
 		return id;
@@ -46,25 +46,18 @@ public class Endereco implements Serializable {
 		this.cep = cep;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
 
 	public Endereco() {
 		
 	}
 
-	public Endereco(int id, String rua, String bairro, int cep, Cliente cliente) {
+	public Endereco(int id, String rua, String bairro, int cep) {
 		super();
 		this.id = id;
 		this.rua = rua;
 		this.bairro = bairro;
 		this.cep = cep;
-		this.cliente = cliente;
+
 	}
 
 	@Override
@@ -86,8 +79,7 @@ public class Endereco implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Endereco [id=" + id + ", rua=" + rua + ", bairro=" + bairro + ", cep=" + cep + ", cliente=" + cliente
-				+ "]";
+		return "Endereco [id=" + id + ", rua=" + rua + ", bairro=" + bairro + ", cep=" + cep + "]";
 	}
 	
 	

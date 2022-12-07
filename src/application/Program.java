@@ -7,15 +7,13 @@ import model.entities.Endereco;
 public class Program {
 
 	public static void main(String[] args) {
-		
-		Cliente obj = new Cliente(1,"Pedro", "Rueda");
-		Endereco end = new Endereco(1, "Rua 1", "Bairro 1", 111111, obj);
-		System.out.println(obj);
-		System.out.println(end);
+
 		
 		ClienteDao clienteDao = DaoFactory.createClienteDao();
 		
-		System.out.println();
+		Cliente cliente = clienteDao.findById(2);
+		
+		System.out.println(cliente);
 		
 	}
 	
