@@ -24,18 +24,16 @@ public class ClienteDaoJDBC implements ClienteDao {
 		this.conn = conn;
 	}
 	
-	
-	
-	
+		
 	@Override
 	public void insert(Cliente cli) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO cliente "
-					+ "(nome,sobrenome)"
-					+ "VALUES"
-					+ "(?,?)");
+					+ "(nome, sobrenome, id_endereco) "
+					+ "VALUES "
+					+ "(?,?,?)");
 			
 			st.setString(1, cli.getNome());
 			st.setString(2, cli.getSobrenome());
@@ -51,7 +49,9 @@ public class ClienteDaoJDBC implements ClienteDao {
 				}
 				DB.closeResultSet(rs);
 			}
-		else { throw new DbException("Unexpected error");
+		else 
+			{
+			throw new DbException("Unexpected error");
 			}
 		}
 		catch (SQLException e) {
@@ -63,9 +63,27 @@ public class ClienteDaoJDBC implements ClienteDao {
 		}
 	}
 	@Override
-	public void update(Cliente obj) {
-		// TODO Auto-generated method stub
-		
+	public void update(Cliente cli) {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement(
+					"UPDATE cliente "
+					+ "SET nome = ? , sobrenome = ? "
+					+ "WHERE id_cliente = ? ");
+			
+			st.setString(1, cli.getNome());
+			st.setString(2, cli.getSobrenome());
+			st.setInt(3, cli.getId());
+			
+			st.executeUpdate();
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			
+		}
 	}
 
 	@Override
