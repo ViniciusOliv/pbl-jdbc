@@ -33,12 +33,10 @@ public class Program {
 		clienteDao.update(cliente);
 		System.out.println("Atualizado!");
 		
-		
-		
 		System.out.println("---- Deletando -----");
-	int id = sc.nextInt();
-	clienteDao.deleteById(id);
-	System.out.print("Deletado");
-	}
+		int id = sc.nextInt();
+		clienteDao.deleteById(id);
+		System.out.print("Deletado");
+		}
 	
 }
