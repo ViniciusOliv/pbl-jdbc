@@ -57,15 +57,8 @@ public class ClienteDaoJDBC implements ClienteDao {
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				Endereco end = new Endereco();
-				end.setId(rs.getInt("id_cliente"));
-				end.setRua(rs.getString("EndRua"));
-				
-				Cliente cli = new Cliente();
-				cli.setId(rs.getInt("id_cliente"));
-				cli.setNome(rs.getString("nome"));
-				cli.setSobrenome(rs.getString("sobrenome"));
-				cli.setEndereco(end);
+				Endereco end = instantiateEndereco(rs);
+				Cliente cli = instantiateCliente(rs, end);
 				return cli;
 			}
 			return null;
@@ -78,6 +71,28 @@ public class ClienteDaoJDBC implements ClienteDao {
 			DB.closeResultSet(rs);
 		}			
 	}
+
+	private Cliente instantiateCliente(ResultSet rs, Endereco end) throws SQLException {
+		Cliente cli = new Cliente();
+		cli.setId(rs.getInt("id_cliente"));
+		cli.setNome(rs.getString("nome"));
+		cli.setSobrenome(rs.getString("sobrenome"));
+		cli.setEndereco(end); 
+		return cli;
+	}
+
+
+
+	private Endereco instantiateEndereco(ResultSet rs) throws SQLException {
+		Endereco end = new Endereco();
+		end.setId(rs.getInt("id_cliente"));
+		end.setRua(rs.getString("EndRua"));
+		
+		return end;
+	}
+
+
+
 
 	@Override
 	public List<Cliente> findAll() {

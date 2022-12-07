@@ -11,6 +11,7 @@ public class Program {
 		
 		ClienteDao clienteDao = DaoFactory.createClienteDao();
 		
+		System.out.println("---- PROCURANDO POR ID -----");
 		Cliente cliente = clienteDao.findById(2);
 		
 		System.out.println(cliente);
