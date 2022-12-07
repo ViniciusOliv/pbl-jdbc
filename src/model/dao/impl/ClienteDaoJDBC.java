@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,15 +32,16 @@ public class ClienteDaoJDBC implements ClienteDao {
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO cliente "
-					+ "(nome, sobrenome, id_endereco) "
+					+ "(id_cliente, nome, sobrenome) "
 					+ "VALUES "
-					+ "(?,?,?)");
+					+ "(?,?,?)",Statement.RETURN_GENERATED_KEYS);
 			
-			st.setString(1, cli.getNome());
-			st.setString(2, cli.getSobrenome());
-			st.setInt(3, cli.getEndereco().getId());
+			st.setInt(1, cli.getId());
+			st.setString(2, cli.getNome());
+			st.setString(3, cli.getSobrenome());
 			
-			int rowsAffected = st.executeUpdate(null);
+			
+			int rowsAffected = st.executeUpdate();
 			
 			if (rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
@@ -88,8 +90,21 @@ public class ClienteDaoJDBC implements ClienteDao {
 
 	@Override
 	public void deleteById(int id) {
-		// TODO Auto-generated method stub
-		
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement(
+					"DELETE FROM cliente WHERE id_cliente = ?");
+			st.setInt(1, id);
+			
+			st.executeUpdate();
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			
+		}
 	}
 
 	@Override
@@ -211,7 +226,7 @@ public class ClienteDaoJDBC implements ClienteDao {
 		cli.setId(rs.getInt("id_cliente"));
 		cli.setNome(rs.getString("nome"));
 		cli.setSobrenome(rs.getString("sobrenome"));
-		cli.setEndereco(end); 
+
 		return cli;
 	}
 
